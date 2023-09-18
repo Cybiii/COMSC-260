@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ea75eeb-c35b-47e7-ae6b-1f7846af360d" name="Changes" comment="" />
+    <list default="true" id="8ea75eeb-c35b-47e7-ae6b-1f7846af360d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +36,7 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "C:/Users/sebas/Desktop/COMSC-260/1",
+    "last_opened_file_path": "C:/Users/sebas/Desktop/COMSC-210",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -60,6 +62,8 @@
       <option name="presentableId" value="Default" />
       <updated>1694391621579</updated>
       <workItem from="1694391622683" duration="89000" />
+      <workItem from="1694566549746" duration="1000" />
+      <workItem from="1694579526980" duration="4000" />
     </task>
     <servers />
   </component>
