@@ -1,0 +1,142 @@
+Microsoft (R) Macro Assembler Version 14.37.32824.0	    11/12/23 20:44:31
+Sebastian_Silva_260_assign5.asm				     Page 1 - 1
+
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ = 00000007			DAYS = 7 ; constant representing the number of days in a week
+ = 00000018			HOURS = 24 ; constant representing the number of hours in a day
+ = 0000003C			MINUTES = 60 ; constant representing the number of minutes in an hour
+ = 0000003C			SECONDS = 60 ; constant representing the number of seconds in a minute
+
+ 00000000			.data
+ 00000000 00000000			date_time DWORD ?			; byte 0000 stores the DAY, byte 0001 stores the HOUR, byte 0002 stores the MINUTE, and byte 0003 stores the SECOND
+ 00000004 00000000			num_of_iters DWORD 0		; counts the total number of iterations
+ 00000008 07				day BYTE DAYS				; used to restore cl to the current day value
+ 00000009 18				hour BYTE HOURS				; used to restore cl to the current hour value
+ 0000000A 3C				minute BYTE MINUTES			; used to restore cl to the current minute value
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000		    mov eax, 0
+ 00000005  BE 00000000 R	    mov esi, OFFSET date_time
+ 0000000A  B9 00000000		    mov ecx, 0
+ 0000000F  B1 07		    mov cl, DAYS
+
+				    ; comment 1: Initial loop, counting the days from 0-7th day
+ 00000011			    L1:
+ 00000011  88 0D 00000008 R	    mov day, cl
+				    
+				    ; comment 2: We set the loop for Hours to 24 so it checks all 50400 seconds in a day
+ 00000017  B1 18		    mov cl, HOURS
+
+				        ; comment 3: We start the hour per day counter here with cl set to #Hours in a day
+ 00000019			        L2:
+ 00000019  88 0D 00000009 R	        mov hour, cl
+
+				        ; comment 4: We set the minutes in a day counter here, to count all 3600 seconds per hour
+ 0000001F  B1 3C		        mov cl, MINUTES
+				            
+				            ; comment 5: We loop through every minute here
+ 00000021			            L3:
+ 00000021  88 0D 0000000A R	            mov minute, cl
+
+				            ; comment 6: We update the counter to count all 60 seconds of a minute
+ 00000027  B1 3C		            mov cl, SECONDS
+ 00000029  80 E9 01		            sub cl, 1
+
+				                ; comment 7: We do the loop for seconds in a minute by adding one to the dereferenced pointer
+ 0000002C			                L4:
+ 0000002C  80 46 03 01		                add BYTE PTR [esi+3], 1
+				                
+				                ; comment 8: We count the ammount of iterations
+ 00000030  83 05 00000004 R	                add num_of_iters, 1
+	   01
+ 00000037  E2 F3		                Loop L4
+
+				            ; comment 9: We handle the special case when a minute ends, a second goes from 00:59 to 01:00 and we add one to the counter
+ 00000039  80 46 02 01		            add BYTE PTR [esi+2], 1
+ 0000003D  C6 46 03 00		            mov BYTE PTR [esi+3], 0
+ 00000041  83 05 00000004 R	            add num_of_iters, 1
+	   01
+ 00000048  8A 0D 0000000A R	            mov cl, minute
+ 0000004E  E2 D1		            Loop L3
+
+				        ; comment 10: We update the array for when it passes from 00:59:59 to 01:00:00 
+ 00000050  80 46 01 01		        add BYTE PTR [esi+1], 1
+ 00000054  C6 46 02 00		        mov BYTE PTR [esi+2], 0
+ 00000058  C6 46 03 00		        mov BYTE PTR [esi+3], 0
+ 0000005C  8A 0D 00000009 R	        mov cl, hour
+ 00000062  E2 B5		        Loop L2
+
+				    ; comment 11: When a day is completed, we update the whole array for it to only store the value of the day passed
+ 00000064  80 06 01		    add BYTE PTR [esi], 1
+ 00000067  C6 46 01 00		    mov BYTE PTR [esi+1], 0
+ 0000006B  C6 46 02 00		    mov BYTE PTR [esi+2], 0
+ 0000006F  C6 46 03 00		    mov BYTE PTR [esi+3], 0
+
+				    ; comment 12: We loop until the day counter is exhausted
+ 00000073  8A 0D 00000008 R	    mov cl, day
+ 00000079  E2 96		    Loop L1
+
+				    invoke ExitProcess,0
+ 0000007B  6A 00	   *	    push   +000000000h
+ 0000007D  E8 00000000 E   *	    call   ExitProcess
+ 00000082			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.37.32824.0	    11/12/23 20:44:31
+Sebastian_Silva_260_assign5.asm				     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000000B DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000082 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000082 Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 00000011 _TEXT	
+  L2 . . . . . . . . . . . . . .	L Near	 00000019 _TEXT	
+  L3 . . . . . . . . . . . . . .	L Near	 00000021 _TEXT	
+  L4 . . . . . . . . . . . . . .	L Near	 0000002C _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+DAYS . . . . . . . . . . . . . .	Number	 00000007h   
+HOURS  . . . . . . . . . . . . .	Number	 00000018h   
+MINUTES  . . . . . . . . . . . .	Number	 0000003Ch   
+SECONDS  . . . . . . . . . . . .	Number	 0000003Ch   
+date_time  . . . . . . . . . . .	DWord	 00000000 _DATA	
+day  . . . . . . . . . . . . . .	Byte	 00000008 _DATA	
+hour . . . . . . . . . . . . . .	Byte	 00000009 _DATA	
+minute . . . . . . . . . . . . .	Byte	 0000000A _DATA	
+num_of_iters . . . . . . . . . .	DWord	 00000004 _DATA	
+
+	   0 Warnings
+	   0 Errors
